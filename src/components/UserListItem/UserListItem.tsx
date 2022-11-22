@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Checkbox, Image } from "antd";
 import { User } from "../../api/responseTypes";
 import { Description, TabContentWrapper, Title, UserWrapper } from "./styled";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 interface UserListItemProps {
   user: User;
@@ -19,13 +21,17 @@ const UserListItem = ({ user, addToSelection }: UserListItemProps) => {
 
   return (
     <UserWrapper onClick={() => handleSelection()}>
-      <Image
-        alt={`avatar of ${first_name} ${last_name}`}
-        height="7.5vh"
-        width="7.5vh"
-        src={avatar ?? "../../assets/default_avatar.jpg"}
-        preview={false}
-      />
+      {avatar && (
+        <Image
+          alt={`avatar of ${first_name} ${last_name}`}
+          height="7.5vh"
+          width="7.5vh"
+          src={avatar}
+          preview={false}
+        />
+      )}
+
+      {!avatar && <Avatar size={100} icon={<UserOutlined />} />}
 
       <TabContentWrapper>
         <Title>
