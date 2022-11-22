@@ -6,20 +6,16 @@ import { ContentWrapper, Header, MainWrapper, Searchbar } from "./styled";
 import UserListItem from "../../components/UserListItem";
 
 const Homepage = () => {
-  const [selected, setSelected] = useState<User[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [searchText, setSearchText] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
 
-  const findUserById = (id: number) => {
-    return users.filter((user) => user.id === id)[0];
-  };
-
   const addToSelection = (id: number, wasSelected: boolean) => {
     wasSelected
-      ? setSelected(selected.filter((user) => user.id !== id))
-      : setSelected([...selected, findUserById(id)]);
+      ? setSelected(selected.filter((userID) => userID !== id))
+      : setSelected([...selected, id]);
   };
 
   const compare = (a: User, b: User) => {
@@ -71,8 +67,12 @@ const Homepage = () => {
   }, [searchText, users]);
 
   useEffect(() => {
-    console.log(selected);
+    console.log("selected users IDs:", ...selected);
   }, [selected]);
+
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
 
   return (
     <MainWrapper>
