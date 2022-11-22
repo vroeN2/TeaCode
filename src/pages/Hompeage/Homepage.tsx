@@ -2,8 +2,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { User } from "../../api/responseTypes";
 import Loading from "../../components/Loading";
-import { ContentWrapper, Header, MainWrapper, Searchbar } from "./styled";
+import {
+  ContentWrapper,
+  EmptyWrapper,
+  Header,
+  MainWrapper,
+  Searchbar,
+} from "./styled";
 import UserListItem from "../../components/UserListItem";
+import { Empty } from "antd";
 
 const Homepage = () => {
   const [selected, setSelected] = useState<number[]>([]);
@@ -69,7 +76,7 @@ const Homepage = () => {
   useEffect(() => {
     console.log("selected users IDs:", ...selected);
   }, [selected]);
-  
+
   return (
     <MainWrapper>
       <ContentWrapper>
@@ -85,6 +92,7 @@ const Homepage = () => {
         {isLoading && <Loading />}
 
         {!isLoading &&
+          filteredUsers.length > 0 &&
           filteredUsers.map((user) => {
             return (
               <UserListItem
@@ -94,6 +102,15 @@ const Homepage = () => {
               />
             );
           })}
+
+        {!isLoading && filteredUsers.length === 0 && (
+          <EmptyWrapper>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={<span>No contacts found</span>}
+            />
+          </EmptyWrapper>
+        )}
       </ContentWrapper>
     </MainWrapper>
   );

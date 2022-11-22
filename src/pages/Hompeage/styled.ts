@@ -64,3 +64,9 @@ export const Searchbar = styled(Input.Search)`
     }
   }
 `;
+
+export const EmptyWrapper = styled(FlexContainer)`
+  justify-content: center;
+  align-items: center;
+  background: white;
+`;
