@@ -69,11 +69,7 @@ const Homepage = () => {
   useEffect(() => {
     console.log("selected users IDs:", ...selected);
   }, [selected]);
-
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
-
+  
   return (
     <MainWrapper>
       <ContentWrapper>
