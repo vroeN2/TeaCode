@@ -23,7 +23,6 @@ const Homepage = () => {
   const logSelected = () => {
     console.log(selected);
   };
-
   useEffect(() => {
     setIsLoading(true);
 
@@ -32,7 +31,6 @@ const Homepage = () => {
         const { data } = await axios.get<User[]>(
           "https://teacode-recruitment-challenge.s3.eu-central-1.amazonaws.com/users.json"
         );
-
         setUsers(data);
         setIsLoading(false);
       } catch (error) {
@@ -54,7 +52,7 @@ const Homepage = () => {
   useEffect(() => {
     logSelected();
   });
-
+  
   return (
     <MainWrapper>
       <ContentWrapper>

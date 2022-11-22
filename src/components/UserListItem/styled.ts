@@ -36,13 +36,3 @@ export const TabContentWrapper = styled(FlexDiv)`
   transition: 0.15s all ease;
   width: 15%;
 `;
-
-export const Title = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-`;
-
-export const Description = styled.h3`
-  font-size: 1rem;
-  margin-top: 0.5rem;
-`;
