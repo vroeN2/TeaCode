@@ -6,8 +6,23 @@ import { ContentWrapper, Header, MainWrapper, Searchbar } from "./styled";
 import UserListItem from "../../components/UserListItem";
 
 const Homepage = () => {
+  const [selected, setSelected] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+
+  const findUserById = (id: number) => {
+    return users.filter((user) => user.id === id)[0];
+  };
+
+  const addToSelection = (id: number, wasSelected: boolean) => {
+    wasSelected
+      ? setSelected(selected.filter((user) => user.id !== id))
+      : setSelected([...selected, findUserById(id)]);
+  };
+
+  const logSelected = () => {
+    console.log(selected);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -17,8 +32,6 @@ const Homepage = () => {
         const { data } = await axios.get<User[]>(
           "https://teacode-recruitment-challenge.s3.eu-central-1.amazonaws.com/users.json"
         );
-
-        console.log(data);
 
         setUsers(data);
         setIsLoading(false);
@@ -38,6 +51,10 @@ const Homepage = () => {
     getUsers();
   }, []);
 
+  useEffect(() => {
+    logSelected();
+  });
+
   return (
     <MainWrapper>
       <ContentWrapper>
@@ -49,7 +66,13 @@ const Homepage = () => {
 
         {!isLoading &&
           users.map((user) => {
-            return <UserListItem user={user} key={user.id} />;
+            return (
+              <UserListItem
+                user={user}
+                key={user.id}
+                addToSelection={addToSelection}
+              />
+            );
           })}
       </ContentWrapper>
     </MainWrapper>

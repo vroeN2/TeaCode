@@ -23,7 +23,6 @@ export const Header = styled(FlexContainer)`
   justify-content: center;
   align-items: center;
   color: #fff;
-  margin-bottom: 0.5rem;
   background: linear-gradient(-45deg, #ffa63d, #ff3d77, #338aff, #3cf0c5);
   background-size: 600%;
   animation: anim-1 20s linear infinite;
