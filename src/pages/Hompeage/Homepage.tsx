@@ -23,6 +23,17 @@ const Homepage = () => {
   const logSelected = () => {
     console.log(selected);
   };
+
+  const compare = (a: User, b: User) => {
+    if (a.last_name < b.last_name) {
+      return -1;
+    }
+    if (a.last_name > b.last_name) {
+      return 1;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -31,7 +42,7 @@ const Homepage = () => {
         const { data } = await axios.get<User[]>(
           "https://teacode-recruitment-challenge.s3.eu-central-1.amazonaws.com/users.json"
         );
-        setUsers(data);
+        setUsers(data.sort(compare));
         setIsLoading(false);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -52,7 +63,7 @@ const Homepage = () => {
   useEffect(() => {
     logSelected();
   });
-  
+
   return (
     <MainWrapper>
       <ContentWrapper>
