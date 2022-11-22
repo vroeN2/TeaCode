@@ -9,6 +9,8 @@ const Homepage = () => {
   const [selected, setSelected] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
 
   const findUserById = (id: number) => {
     return users.filter((user) => user.id === id)[0];
@@ -20,9 +22,16 @@ const Homepage = () => {
       : setSelected([...selected, findUserById(id)]);
   };
 
-  const logSelected = () => {
-    console.log(selected);
+  const compare = (a: User, b: User) => {
+    if (a.last_name < b.last_name) {
+      return -1;
+    }
+    if (a.last_name > b.last_name) {
+      return 1;
+    }
+    return 0;
   };
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -31,7 +40,7 @@ const Homepage = () => {
         const { data } = await axios.get<User[]>(
           "https://teacode-recruitment-challenge.s3.eu-central-1.amazonaws.com/users.json"
         );
-        setUsers(data);
+        setUsers(data.sort(compare));
         setIsLoading(false);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -50,20 +59,37 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
-    logSelected();
-  });
-  
+    setFilteredUsers(
+      users.filter(
+        (user) =>
+          user.first_name
+            .toLowerCase()
+            .includes(searchText.toLocaleLowerCase()) ||
+          user.last_name.toLowerCase().includes(searchText.toLocaleLowerCase())
+      )
+    );
+  }, [searchText, users]);
+
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
+
   return (
     <MainWrapper>
       <ContentWrapper>
         <Header>Contacts</Header>
 
-        <Searchbar size="large" />
+        <Searchbar
+          size="large"
+          value={searchText}
+          placeholder="start typing to filter"
+          onChange={(e) => setSearchText(e.target.value)}
+        />
 
         {isLoading && <Loading />}
 
         {!isLoading &&
-          users.map((user) => {
+          filteredUsers.map((user) => {
             return (
               <UserListItem
                 user={user}
